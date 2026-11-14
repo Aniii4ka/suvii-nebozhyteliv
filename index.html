@@ -95,7 +95,7 @@ button, select, input { font: inherit; color: inherit; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) 390px;
   grid-template-rows: auto auto minmax(460px, 1fr) auto auto;
-  grid-template-areas: "head head" "arc panel" "graph panel" "time panel" "foot foot";
+  grid-template-areas: "head head" "arc panel" "graph panel" "gloss panel" "foot foot";
   gap: 12px 16px;
   padding-block: 14px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
@@ -147,23 +147,6 @@ header { grid-area: head; display: flex; flex-wrap: wrap; align-items: flex-end;
 .graph-tools .btn { padding: 5px 11px; font-size: 13px; background: var(--surface); }
 .toast { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13px; color: var(--ink); box-shadow: var(--shadow); max-width: calc(100% - 28px); text-align: center; }
 
-/* ---------- timeline ---------- */
-.timeline { grid-area: time; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px 14px; }
-.tl-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
-.tl-head h2 { margin: 0; font-family: var(--f-display); font-size: 21px; font-weight: 600; }
-.tl-head .when { color: var(--muted); font-size: 13px; }
-.eras { list-style: none; margin: 12px 0 8px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); row-gap: 14px; position: relative; }
-.eras.one-row::before { content: ""; position: absolute; left: 8%; right: 8%; top: 9px; height: 2px; background: var(--line); }
-.eras li { position: relative; display: flex; justify-content: center; }
-.era-btn { background: none; border: 0; padding: 0 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; min-width: 0; }
-.era-btn .dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); position: relative; z-index: 1; }
-.era-btn .nm { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
-.era-btn .wh { font-size: 11px; color: var(--muted); line-height: 1.2; }
-.era-btn:hover .dot { border-color: var(--gold); }
-.era-btn.fresh .dot { border-color: var(--glow); box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 30%, transparent); }
-.era-btn[aria-current="true"] .dot { border-color: var(--crimson); background: var(--crimson); box-shadow: 0 0 0 4px color-mix(in srgb, var(--crimson) 20%, transparent); }
-.era-btn[aria-current="true"] .nm { color: var(--crimson); }
-.tl-text { margin: 0; color: var(--ink); max-width: 90ch; }
 
 /* ---------- panel ---------- */
 .panel-col { grid-area: panel; min-height: 0; min-width: 0; }
@@ -231,6 +214,27 @@ header { grid-area: head; display: flex; flex-wrap: wrap; align-items: flex-end;
 .arcsum ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .arcsum li { font-family: var(--f-text); line-height: 1.5; }
 .arcsum .chn { display: inline-block; margin-left: 6px; font-family: var(--f-ui); font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.arcsum .era-text { margin: 0; font-family: var(--f-text); line-height: 1.55; max-width: 90ch; }
+/* ---------- глосарій (під мапою) ---------- */
+.gloss { grid-area: gloss; min-width: 0; border: 1px solid var(--line-gold); border-radius: 3px; background: var(--corners), var(--surface); padding: 16px 22px 18px; display: flex; flex-direction: column; gap: 12px; }
+.gl-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; }
+.gl-head h2 { margin: 0; font-family: var(--f-caps); font-size: 18px; font-weight: 600; letter-spacing: .06em; color: var(--gold); }
+.gl-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.gl-tab { border: 1px solid var(--line-gold); background: none; color: var(--muted); border-radius: 999px; padding: 4px 12px; font: 500 13px/1.2 var(--f-ui); cursor: pointer; }
+.gl-tab:hover { color: var(--ink); border-color: var(--gold); }
+.gl-tab[aria-pressed="true"] { color: var(--ink); border-color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); }
+.gl-tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.gl-list { margin: 0; columns: 2 340px; column-gap: 34px; }
+.gl-item { break-inside: avoid; padding: 8px 0 10px; border-top: 1px solid var(--line); }
+.gl-item dt { font-family: var(--f-display); font-size: 17px; font-weight: 600; line-height: 1.3; }
+.gl-item dd { margin: 3px 0 0; font-family: var(--f-text); font-size: 14px; line-height: 1.5; color: var(--ink); }
+.gl-item dd.gl-x { color: var(--muted); font-size: 13.5px; }
+.gl-k { font-family: var(--f-ui); font-size: 12px; letter-spacing: .02em; color: var(--muted); }
+.gl-py { font-family: var(--f-ui); font-size: 12.5px; font-weight: 400; color: var(--muted); letter-spacing: .01em; }
+.gl-new { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 3px; font: 600 10.5px/1.6 var(--f-ui); color: var(--glow); border: 1px solid color-mix(in srgb, var(--glow) 60%, transparent); vertical-align: 2px; }
+.gl-lock { margin: 0; font-size: 13px; color: var(--muted); }
+.gl-src { margin: 0; font-size: 12px; color: var(--muted); }
+
 .reveal-toggle { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; border: 1px solid var(--line-gold); background: color-mix(in srgb, var(--crimson) 6%, var(--surface)); color: var(--crimson); border-radius: 3px; padding: 8px 12px; cursor: pointer; font-size: 13px; }
 .reveal-toggle:hover { border-color: var(--crimson); }
 .reveal-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; border-left: 3px solid var(--crimson); padding: 8px 10px 8px 26px; background: color-mix(in srgb, var(--crimson) 6%, var(--surface)); border-radius: 0 3px 3px 0; }
@@ -267,15 +271,13 @@ hr.thin { border: 0; border-top: 1px solid var(--line); margin: 0; }
 
 @media (max-width: 900px) {
   .app { min-height: 100%; grid-template-columns: minmax(0, 1fr); grid-template-rows: none;
-    grid-template-areas: "head" "arc" "graph" "time" "panel" "foot"; }
+    grid-template-areas: "head" "arc" "graph" "gloss" "panel" "foot"; }
   .graph-wrap { height: 62vh; min-height: 380px; }
   .panel { overflow: visible; max-height: none; position: static; }
   .brand h1 { font-size: 28px; }
   .field input { width: 120px; }
 }
 @media (max-width: 560px) {
-  .eras { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .eras.one-row::before { display: none; }
   .controls { width: 100%; }
   .field { flex: 1 1 100%; min-width: 0; }
   .field select, .field input { max-width: none; flex: 1; min-width: 0; width: 100%; }
@@ -303,12 +305,11 @@ body {
 .field { background: var(--surface); }
 .field label, .compare-add label { font-family: var(--f-caps); font-size: 14px; letter-spacing: .06em; color: var(--gold); }
 
-.graph-wrap, .timeline, .panel {
+.graph-wrap, .panel {
   border: 1px solid var(--line-gold); border-radius: 3px;
   box-shadow: inset 0 0 0 4px transparent, var(--shadow);
 }
 .graph-wrap { background: var(--corners), radial-gradient(900px 420px at 50% -8%, var(--gold-soft), transparent 62%), var(--surface-2); }
-.timeline { background: var(--corners), var(--surface); }
 .panel { background: var(--corners), var(--surface); }
 .scenery { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .scenery .moon { fill: var(--moon); opacity: .3; }
@@ -322,17 +323,6 @@ body {
 .realm.bottom { bottom: 14px; left: 22px; }
 .graph-tools { top: 14px; right: 16px; }
 
-/* хронологія як сувій із валиками */
-.timeline { position: relative; padding-inline: 36px; }
-.timeline::before, .timeline::after { content: ""; position: absolute; top: -7px; bottom: -7px; width: 12px; border-radius: 6px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 55%, #000), var(--gold), color-mix(in srgb, var(--gold) 55%, #000)); }
-.timeline::before { left: -3px; }
-.timeline::after { right: -3px; }
-.tl-head h2 { font-family: var(--f-caps); letter-spacing: .08em; color: var(--gold); }
-.eras.one-row::before { background: linear-gradient(90deg, transparent, var(--line-gold) 10%, var(--line-gold) 90%, transparent); height: 1px; top: 10px; }
-.era-btn .dot { width: 15px; height: 15px; border-radius: 2px; transform: rotate(45deg); margin: 2px 0; border-color: var(--line-gold); }
-.era-btn .nm { font-family: var(--f-display); font-size: 15.5px; font-weight: 700; }
-.tl-text { font-family: var(--f-text); font-size: 14px; }
 
 /* бічний сувій */
 .panel-inner { padding: 22px 22px 26px; }
@@ -349,7 +339,7 @@ body {
 .name-btn img, .form-tab img, .rel img { box-shadow: 0 0 0 1px var(--line-gold); }
 hr.thin { border-top-color: var(--line-gold); opacity: .6; }
 .toast { border-radius: 3px; border-color: var(--line-gold); font-family: var(--f-display); font-size: 16px; }
-@media (max-width: 560px) { .brand h1 { font-size: 32px; } .timeline { padding-inline: 24px; } }
+@media (max-width: 560px) { .brand h1 { font-size: 32px; } }
 /* ===================== Заставка: сувій і ліхтарики ===================== */
 /* світла тема: забороняємо браузеру примусово затемнювати сторінку (автотемний режим ламає кольори заставки й мапи) */
 :root[data-theme="light"] { color-scheme: only light; }
@@ -596,14 +586,7 @@ body.intro-leaving .app { opacity: 1; transform: none; transition: opacity .5s e
     <div class="toast" id="toast" hidden></div>
   </div>
 
-  <section class="timeline" aria-labelledby="tlTitle">
-    <div class="tl-head">
-      <h2 id="tlTitle">Періоди</h2>
-      <span class="when" id="eraWhen"></span>
-    </div>
-    <ol class="eras" id="eras"></ol>
-    <p class="tl-text" id="eraText"></p>
-  </section>
+  <section class="gloss" id="gloss" aria-labelledby="glTitle"></section>
 
   <div class="panel-col"><aside class="panel" id="panel" aria-live="polite"><div class="panel-inner" id="panelInner"></div></aside></div>
 
@@ -2174,7 +2157,9 @@ function renderPanel() {
 }
 
 function arcSummary() {
-  if (state.all || state.era !== 5) return "";
+  if (state.all) return "";
+  // окремий період: показуємо його опис (раніше був у блоці «Періоди» під мапою)
+  if (state.era !== 5) { const p = ERAS[state.era]; return `<div class="arcsum"><h2>Період «${esc(p.name)}» · ${esc(p.when)}</h2><p class="era-text">${esc(p.text)}</p></div>`; }
   const info = ARC_INFO[state.lvl];
   if (!info) return "";
   const li = (x) => `<li>${esc(x.text)}<span class="chn">розд. ${esc(x.ch)}</span></li>`;
@@ -2194,7 +2179,7 @@ function whatsNew() {
   if (state.showReveals) CHARACTERS.filter((c) => c.mask && c.mask.lvl === L).forEach((c) => items.push(c.mask.name === c.name ? `Розкрито минуле: <button class="link" type="button" data-go="${c.id}">${esc(c.name)}</button>` : `Розкрито: <button class="link" type="button" data-go="${c.id}">${esc(c.mask.name)} — це ${esc(c.name)}</button>`));
   CHARACTERS.filter((c) => c.early && c.early.lvl === L).forEach((c) => items.push(`<button class="link" type="button" data-go="${c.id}">${esc(c.name)}</button> тепер з’являється вже в ранніх епохах`));
   const eras = ERAS.filter((e, i) => i >= 1 && e.lvl === L);
-  if (eras.length) items.push(`Нові епохи на хронології: ${eras.map((e) => "«" + esc(e.name) + "»").join(", ")}`);
+  if (eras.length) items.push(`Нові періоди в «Прочитано до»: ${eras.map((e) => "«" + esc(e.name) + "»").join(", ")}`);
   let facts = 0; CHARACTERS.forEach((c) => (c.facts || []).forEach((f) => { if (f.lvl === L) facts++; }));
   let stages = 0; RELATIONS.forEach((r) => r.stages.forEach((s) => { if (s.lvl === L) stages++; }));
   if (stages) items.push(`Нових етапів у зв’язках: ${stages}`);
@@ -2333,7 +2318,7 @@ function nodeCardTop(v, f, facColor, rels, alias) {
           <div class="what">${esc(TYPES[r.type].name)} · ${esc(r.label)}</div>
           <div class="note">${esc(r.text)}</div>
           ${more > 0 ? `<div class="more">Ще ${more} ${more === 1 ? "етап" : more < 5 ? "етапи" : "етапів"} цієї історії →</div>` : ""}</span></button></li>`;
-      }).join("")}</ul>` : `<p class="muted small">У цій епосі зв’язків не видно. Спробуйте іншу точку на хронології.</p>`}
+      }).join("")}</ul>` : `<p class="muted small">У цій епосі зв’язків не видно. Спробуйте інший період у «Прочитано до».</p>`}
     </div>`;
 }
 function edgeCard(r) {
@@ -2374,7 +2359,7 @@ function select(sel) {
   state.formKey = null;
   if (sel && sel.kind === "node") {
     const e = eraFor(byId[sel.id]);
-    if (e !== state.era) { state.era = e; syncSpoiler(); store.set("tgcf-era", String(e)); renderEras(); renderLegend(); renderNames(); state.sel = sel; syncGraph(true); renderPanel(); return; }
+    if (e !== state.era) { state.era = e; syncSpoiler(); store.set("tgcf-era", String(e)); renderArcBox(); renderLegend(); renderNames(); state.sel = sel; syncGraph(true); renderPanel(); return; }
   }
   state.sel = sel;
   syncGraph(false);
@@ -2397,25 +2382,103 @@ function renderSpoiler() {
   syncSpoiler();
 }
 function syncSpoiler() { $("#spoiler").value = state.all ? "all" : state.era === 5 ? "arc:" + state.lvl : "era:" + state.era; }
-function renderEras() {
-  const open = ERAS.map((e, i) => ({ ...e, i })).filter((e) => e.i >= 1 && state.lvl >= e.lvl);
-  $("#eras").classList.toggle("one-row", open.length <= 6);
-  $("#eras").innerHTML = open.map((e) =>
-    `<li><button class="era-btn ${isNew(e.lvl) ? "fresh" : ""}" type="button" data-era="${e.i}" aria-current="${!state.all && e.i === state.era}" title="${esc(e.name)}">
-      <span class="dot"></span><span class="nm">${e.i === 5 ? "Події роману" : esc(e.name)}</span><span class="wh">${esc(e.when)}</span></button></li>`).join("");
-  const e = ERAS[state.era];
-  $("#eraWhen").textContent = state.all ? "Уся історія · усі епохи" : state.era === 5 ? "За подіями книги · до арки «" + arcName(state.lvl) + "»" : "Окремий період · " + e.name + " · " + e.when;
-  $("#eraText").textContent = e.text;
-}
 function renderLegend() {}
 function renderNames() {
   $("#names").innerHTML = CHARACTERS.map(view).filter((v) => state.lvl >= v.lvl && !(v.until && state.lvl >= v.until)).map((v) => `<option value="${esc(v.name)}"></option>`).join("");
 }
 function renderArcBox() { const html = arcSummary(); const box = $("#arcbox"); box.innerHTML = html; box.hidden = !html; }
+/* Глосарій. Написання — за глосарієм українського видання; піньїнь звірено з Heaven Officials Blessing Wiki
+   (сторінки персонажів, зброї й понять) та Wiktionary (читання кожного ієрогліфа). Пояснення — своїми словами.
+   lvl — з якої арки запис відкривається; x — додаткові рядки (титул, облік) зі своїм рівнем. */
+const GLOSSARY_TABS = [
+  { key: "terms", name: "Терміни" },
+  { key: "weapons", name: "Зброя" },
+  { key: "names", name: "Імена й титули" },
+];
+const GLOSSARY = [
+  // ---- терміни ----
+  { tab: "terms", lvl: 1, t: "Благовісні хмари", py: "xiángyún", d: "Хмари, на яких у китайських міфах пересуваються боги й безсмертні. Вважаються добрим знаком." },
+  { tab: "terms", lvl: 1, t: "Військові та цивільні боги", py: "wǔshén, wénshén", d: "Два види небесних урядників: військові захищають людей і відають війною та бойовими мистецтвами, цивільні опікуються культурою, освітою й обрядами." },
+  { tab: "terms", lvl: 1, t: "Вознесіння", py: "fēishēng", d: "Шлях, яким смертна людина стає небесним урядником." },
+  { tab: "terms", lvl: 1, t: "Даоське ім’я", py: "fǎhào", d: "Ім’я або титул, що їх отримують, приймаючи буддійські чи даоські обітниці." },
+  { tab: "terms", lvl: 1, t: "Даоські ченці, даоси", py: "dàoshì", d: "Ті, хто сповідує даосизм і присвячує життя самовдосконаленню. Здавна лікували, вивчали бойові мистецтва й обряди, часто мандрували й жили скромно." },
+  { tab: "terms", lvl: 1, t: "Духовні сили", py: "fǎlì", d: "Надприродна сила, яку дають духовні практики; нею борються зі злими духами." },
+  { tab: "terms", lvl: 1, t: "Китайське традиційне вбрання", py: "hànfú", d: "Одяг народу Хань. Зазвичай має три шари: нижній, середній і верхній, а до них — пояси й інші прикраси." },
+  { tab: "terms", lvl: 1, t: "Небесне випробування", py: "tiānjié", d: "Випробування, яке проходять молодші небесні чиновники, щоб стати повноправними урядниками Верхнього Небесного палацу." },
+  { tab: "terms", lvl: 1, t: "Небесні урядники", py: "shénguān", d: "Люди, які пройшли вознесіння й стали богами. Разом із людьми й привидами — одна з трьох сил, довкола яких точиться роман." },
+  { tab: "terms", lvl: 1, t: "Привиди, примари", py: "guǐ", d: "Злі духи й потойбічні створіння — третя з трьох сил роману поряд із людьми й богами." },
+  { tab: "terms", lvl: 1, t: "Талісмани", py: "fú", d: "Паперові смужки із заклинаннями, написаними кіновар’ю або кров’ю. Даоси лікують ними й виганяють духів." },
+  { tab: "terms", lvl: 1, t: "Учення дао, даосизм", py: "dàofǎ", d: "Давньокитайське вчення про «шлях» — дао, що творить і живить усе сутнє, не наказуючи йому, а даючи йти за власною природою." },
+  { tab: "terms", lvl: 1, t: "Чотири Великі Лиха", py: "sìdàhài", d: "Так називають чотирьох найвідоміших привидів: Зелений Ліхтар, що подорожує вночі; Темновод, що топить кораблі; Всеосяжне Лихо в білому вбранні; Шукач квіток у багряну зливу." },
+  { tab: "terms", lvl: 1, t: "Чотири Відомі Казки", py: "sìmíngjǐng", d: "Легенди про смертне життя чотирьох небесних урядників: Молодий Лорд, який спорожнив келих вина; Принц, який завоював прихильність богів; Генерал, який зламав свій меч; Принцеса, яка перерізала собі горло." },
+  { tab: "terms", lvl: 1, t: "Шлях самовдосконалення", py: "xiūxíng", d: "Даоське уявлення, що людина практиками може здобути надприродні сили й подовжити життя." },
+  // ---- зброя ----
+  { tab: "weapons", lvl: 1, t: "Жвоє", py: "ruòyé", d: "Шовкова стрічка Сє Ляня, його духовна зброя. Назва означає «як нібито меч»; у звичайному прочитанні другий ієрогліф — xié, «зловісний»." },
+  { tab: "weapons", lvl: 1, t: "Шабля Емін", py: "wāndāo èmìng", d: "Вигнута шабля Хва Чена. Назва означає «нещаслива доля»." },
+  { tab: "weapons", lvl: 2, t: "Меч Хондзін", py: "hóngjìng", d: "«Червоне дзеркало» — меч, що показує справжню подобу привида." },
+  { tab: "weapons", lvl: 3, t: "Меч Фансінь", py: "fāngxīn", d: "Назва означає «сердечне почуття прихильності, любові» і збігається з ім’ям камерального наставника Фан Сіня.",
+    x: [{ lvl: 7, k: "Інша назва", t: "Джусінь", py: "zhūxīn", d: "«карати за сердечні наміри»" }] },
+  // ---- імена й титули (за абеткою; без поділу на «урядників» і «привидів», щоб не підказувати) ----
+  { tab: "names", lvl: 6, t: "Бай Дзінь", py: "Bái Jǐn", d: "«Біла парча».", x: [{ lvl: 6, k: "Як привид", t: "Свята парча", py: "Jǐnyī xiān" }] },
+  { tab: "names", lvl: 2, t: "Баньюе", py: "Bànyuè", d: "«Півмісяць» — так само зветься й її королівство." },
+  { tab: "names", lvl: 3, t: "Білий Безликий", py: "Báiwúxiàng", d: "Один із Чотирьох Великих Лих.", x: [{ lvl: 3, k: "Титул", t: "Всеосяжне Лихо в білому вбранні", py: "Báiyī huòshì" }] },
+  { tab: "names", lvl: 3, t: "Ґудзи", py: "Gǔzi", d: "«Пшоно»." },
+  { tab: "names", lvl: 1, t: "Дзюньву", py: "Jūnwú", d: "«Володар» і «я».", x: [{ lvl: 1, k: "Титул", t: "Верховний бог Військової Могутності", py: "Shénwǔ dàdì" }] },
+  { tab: "names", lvl: 3, t: "Їнь Ю", py: "Yǐn Yù", d: "«Привабити нефрит».", x: [{ lvl: 6, k: "Титул", t: "Його Високість Їнь Ю", py: "Yǐn Yù diànxià" }] },
+  { tab: "names", lvl: 2, t: "Лан Цяньцьов", py: "Láng Qiānqiū", d: "«Лан» — «молодий чоловік», «Цяньцьов» — «тисяча осеней», тобто довговічність.", x: [{ lvl: 2, k: "Титул", t: "Володар Тайхва", py: "Tàihuá zhēnjūn", d: "«мирний і пишний»" }] },
+  { tab: "names", lvl: 3, t: "Ланьчан", py: "Lánchāng", d: "«Орхідея» й «аїр».", x: [{ lvl: 6, k: "Людське ім’я", t: "Дзяньлань", py: "Jiànlán", d: "«орхідея-меч», квітка гладіолус" }] },
+  { tab: "names", lvl: 1, t: "Лінвень", py: "Língwén", d: "«Священна культурність», «священна й витончена».", x: [{ lvl: 1, k: "Титул", t: "Володарка Лінвень", py: "Língwén zhēnjūn" }] },
+  { tab: "names", lvl: 4, t: "Мей Няньцін", py: "Méi Niànqīng", d: "«Мей» — «слива»; «Няньцін» — «вчитися, декламувати» і «сановник»." },
+  { tab: "names", lvl: 1, t: "Му Цін", py: "Mù Qíng", d: "«Прагнути» й «почуття».", x: [{ lvl: 1, k: "Титул", t: "генерал Сюаньджень", py: "Xuánzhēn jiāngjūn", d: "«справжня природа речей»" }, { lvl: 6, k: "Облік", t: "Фуяо", py: "Fúyáo", d: "«стрімкий вихор»" }] },
+  { tab: "names", lvl: 1, t: "Пей Мін", py: "Péi Míng", d: "«Пей» — лише прізвище; «Мін» — «чайне листя».", x: [{ lvl: 1, k: "Титул", t: "генерал Мінґван", py: "Míngguāng jiāngjūn", d: "«яскравий блиск»" }] },
+  { tab: "names", lvl: 1, t: "Пей Сьов", py: "Péi Xiù", d: "«Сьов» — «сузір’я».", x: [{ lvl: 1, k: "Титул", t: "генерал Пей-молодший", py: "Xiǎopéi jiāngjūn" }] },
+  { tab: "names", lvl: 1, t: "Сє Лянь", py: "Xiè Lián", d: "«Сє» — «дякувати», «Лянь» — «співчуття, жаль; любити».", x: [{ lvl: 1, k: "Титул", t: "Наслідний принц Сяньле", py: "Xiānlè", d: "«божественний і веселий»" }] },
+  { tab: "names", lvl: 1, t: "Сюань Дзі", py: "Xuān Jī", d: "«Декларувати» й «наложниця»." },
+  { tab: "names", lvl: 1, t: "Фенсінь", py: "Fēngxìn", d: "«Вітер» і «довіра».", x: [{ lvl: 1, k: "Титул", t: "генерал Наньян", py: "Nányáng jiāngjūn", d: "«південне сонце»" }, { lvl: 1, k: "Титул", t: "генерал Дзюян", py: "Jùyáng jiāngjūn", d: "«повна чудова сила»" }, { lvl: 6, k: "Облік", t: "Наньфен", py: "Nánfēng", d: "«південний вітер»" }] },
+  { tab: "names", lvl: 1, t: "Хва Чен", py: "Huā Chéng", d: "«Квіти» й «місто».", x: [{ lvl: 1, k: "Титул", t: "Шукач квіток у багряну зливу", py: "Xuèyǔ tànhuā" }, { lvl: 2, k: "Облік", t: "Саньлан", py: "Sānláng", d: "«третій син»" }, { lvl: 7, k: "Облік", t: "Вумін", py: "Wúmíng", d: "«безіменний»" }] },
+  { tab: "names", lvl: 5, t: "Хе Сюань", py: "Hè Xuán", d: "«Вітати, бажати щастя» і «чорний».", x: [{ lvl: 5, k: "Титул", t: "Темновод, що топить кораблі", py: "Hēishuǐ chénzhōu" }, { lvl: 5, k: "Прізвисько", t: "Чорний Привид Темноводдя", py: "Hēishuǐ xuán guǐ" }] },
+  { tab: "names", lvl: 5, t: "Цвоцво", py: "Cuòcuò", d: "«Помилка»." },
+  { tab: "names", lvl: 3, t: "Ці Жон", py: "Qī Róng", d: "«Скорбота» й «вираз обличчя» — разом «сумний вигляд».", x: [{ lvl: 3, k: "Титул", t: "Зелений Ліхтар, що подорожує вночі", py: "Qīngdēng yèyóu" }, { lvl: 3, k: "Прізвисько", t: "Зелений Привид", py: "Qīng guǐ" }] },
+  { tab: "names", lvl: 2, t: "Цюань Їджень", py: "Quán Yīzhēn", d: "«Влада, право» й «істина».", x: [{ lvl: 2, k: "Титул", t: "генерал Ціїн", py: "Qíyīng jiāngjūn", d: "«незвичайний герой»" }] },
+  { tab: "names", lvl: 2, t: "Ши Цінсюань", py: "Shī Qīngxuán", d: "«Ши» — «учитель, майстер», як і покровителі стихій у міфах; «Цінсюань» — «синьо-зелений» і «чорний», відсилка до милосердного божества — Рятівника від страждань Тайї (Tàiyǐ jiùkǔ tiānzūn).", x: [{ lvl: 2, k: "Титул", t: "Повелитель вітру", py: "Fēngshī" }] },
+  { tab: "names", lvl: 4, t: "Юши Хван", py: "Yǔshī Huáng", d: "«Юши» — покровитель дощу в міфах, так само зветься й королівство Юши; «Хван» — «бамбук».", x: [{ lvl: 4, k: "Титул", t: "Повелителька дощу", py: "Yǔshī niángniang" }] },
+];
+
+/* ---------- глосарій ---------- */
+let glTab = GLOSSARY_TABS.some((t) => t.key === store.get("tgcf-gl")) ? store.get("tgcf-gl") : "terms";
+const glOpen = (lvl) => state.all || state.lvl >= lvl;
+function renderGlossary() {
+  const box = $("#gloss");
+  if (!box) return;
+  const inTab = GLOSSARY.filter((g) => g.tab === glTab);
+  const shown = inTab.filter((g) => glOpen(g.lvl));
+  const locked = inTab.length - shown.length;
+  const fresh = (lvl) => isNew(lvl) ? ` <span class="gl-new">нове</span>` : "";
+  const item = (g) => {
+    const extra = (g.x || []).filter((e) => glOpen(e.lvl)).map((e) =>
+      `<dd class="gl-x"><span class="gl-k">${esc(e.k)}:</span> ${esc(e.t)} <span class="gl-py">· ${esc(e.py)}</span>${e.d ? ` — ${esc(e.d)}` : ""}${e.lvl !== g.lvl ? fresh(e.lvl) : ""}</dd>`).join("");
+    return `<div class="gl-item"><dt><span class="gl-t">${esc(g.t)}</span> <span class="gl-py">· ${esc(g.py)}</span>${fresh(g.lvl)}</dt><dd>${esc(g.d)}</dd>${extra}</div>`;
+  };
+  box.innerHTML = `
+    <div class="gl-head">
+      <h2 id="glTitle">Глосарій</h2>
+      <div class="gl-tabs" role="group" aria-label="Розділи глосарію">${GLOSSARY_TABS.map((t) =>
+        `<button class="gl-tab" type="button" data-gltab="${t.key}" aria-pressed="${t.key === glTab}">${esc(t.name)}</button>`).join("")}</div>
+    </div>
+    <dl class="gl-list">${shown.map(item).join("")}</dl>
+    ${locked ? `<p class="gl-lock">Ще ${locked} ${locked === 1 ? "запис відкриється" : locked < 5 ? "записи відкриються" : "записів відкриються"} далі за сюжетом.</p>` : ""}
+    <p class="gl-src">Написання — за глосарієм українського видання, транскрипція піньїнем звірена з Heaven Officials Blessing Wiki та Wiktionary.</p>`;
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-gltab]");
+  if (!b) return;
+  glTab = b.dataset.gltab; store.set("tgcf-gl", glTab); renderGlossary();
+});
+
 function renderAll(refit) {
-  renderArcBox();
+  renderArcBox(); renderGlossary();
   renderSpoiler(); store.set("tgcf-era", String(state.era));
-  renderEras(); renderLegend(); renderNames(); syncGraph(refit); renderPanel();
+  renderLegend(); renderNames(); syncGraph(refit); renderPanel();
 }
 let toastT;
 function toast(msg) {
@@ -2434,14 +2497,6 @@ document.addEventListener("click", (e) => {
   if (un) { state.compare = state.compare.filter((id) => id !== un.dataset.uncompare); syncGraph(false); renderPanel(); return; }
   if (e.target.closest("[data-reveals]")) { state.showReveals = !state.showReveals; renderArcBox(); renderPanel(); return; }
   if (e.target.closest("[data-back]")) { select(null); return; }
-  const era = e.target.closest("[data-era]");
-  if (era) {
-    if (state.all) { state.all = false; store.set("tgcf-all", "0"); }
-    state.era = +era.dataset.era;
-    renderAll(true);
-    toast(`${ERAS[state.era].name}: персонажів на мапі — ${cy.nodes().not(".off").length}`);
-    return;
-  }
   const chip = e.target.closest("[data-type]");
   if (chip) {
     const k = chip.dataset.type;
