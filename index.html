@@ -234,6 +234,19 @@ header { grid-area: head; display: flex; flex-wrap: wrap; align-items: flex-end;
 .gl-new { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 3px; font: 600 10.5px/1.6 var(--f-ui); color: var(--glow); border: 1px solid color-mix(in srgb, var(--glow) 60%, transparent); vertical-align: 2px; }
 .gl-lock { margin: 0; font-size: 13px; color: var(--muted); }
 .gl-src { margin: 0; font-size: 12px; color: var(--muted); }
+.gl-body { display: flex; flex-direction: column; gap: 12px; }
+.gl-toggle { display: none; }
+@media (max-width: 900px) {
+  .gl-head { flex-wrap: wrap; }
+  .gl-toggle { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; border: 1px solid var(--line-gold); background: none; color: var(--ink); border-radius: 999px; padding: 6px 12px; font: 500 13px/1.2 var(--f-ui); cursor: pointer; }
+  .gl-toggle::after { content: ""; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+  .gl-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
+  .gl-toggle .gl-sum { color: var(--muted); font-weight: 400; }
+  .gl-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .gl-tabs { flex-basis: 100%; }
+  .gloss.collapsed .gl-tabs, .gloss.collapsed .gl-body { display: none; }
+  .gloss.collapsed { gap: 0; }
+}
 
 .reveal-toggle { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; border: 1px solid var(--line-gold); background: color-mix(in srgb, var(--crimson) 6%, var(--surface)); color: var(--crimson); border-radius: 3px; padding: 8px 12px; cursor: pointer; font-size: 13px; }
 .reveal-toggle:hover { border-color: var(--crimson); }
@@ -2459,17 +2472,30 @@ function renderGlossary() {
       `<dd class="gl-x"><span class="gl-k">${esc(e.k)}:</span> ${esc(e.t)} <span class="gl-py">· ${esc(e.py)}</span>${e.d ? ` — ${esc(e.d)}` : ""}${e.lvl !== g.lvl ? fresh(e.lvl) : ""}</dd>`).join("");
     return `<div class="gl-item"><dt><span class="gl-t">${esc(g.t)}</span> <span class="gl-py">· ${esc(g.py)}</span>${fresh(g.lvl)}</dt><dd>${esc(g.d)}</dd>${extra}</div>`;
   };
+  const total = GLOSSARY.filter((g) => glOpen(g.lvl)).length;
+  // на телефоні глосарій згортається (кнопка видна лише там); на комп’ютері завжди розгорнутий
+  box.classList.toggle("collapsed", !glExpanded);
   box.innerHTML = `
     <div class="gl-head">
       <h2 id="glTitle">Глосарій</h2>
+      <button class="gl-toggle" type="button" data-gltoggle aria-expanded="${glExpanded}" aria-controls="glBody">
+        <span class="gl-sum">${total} ${total % 10 === 1 && total % 100 !== 11 ? "запис" : [2, 3, 4].includes(total % 10) && ![12, 13, 14].includes(total % 100) ? "записи" : "записів"}</span>${glExpanded ? "Згорнути" : "Розгорнути"}</button>
       <div class="gl-tabs" role="group" aria-label="Розділи глосарію">${GLOSSARY_TABS.map((t) =>
         `<button class="gl-tab" type="button" data-gltab="${t.key}" aria-pressed="${t.key === glTab}">${esc(t.name)}</button>`).join("")}</div>
     </div>
+    <div class="gl-body" id="glBody">
     <dl class="gl-list">${shown.map(item).join("")}</dl>
     ${locked ? `<p class="gl-lock">Ще ${locked} ${locked === 1 ? "запис відкриється" : locked < 5 ? "записи відкриються" : "записів відкриються"} далі за сюжетом.</p>` : ""}
-    <p class="gl-src">Написання — за глосарієм українського видання, транскрипція піньїнем звірена з Heaven Officials Blessing Wiki та Wiktionary.</p>`;
+    <p class="gl-src">Написання — за глосарієм українського видання, транскрипція піньїнем звірена з Heaven Officials Blessing Wiki та Wiktionary.</p>
+    </div>`;
 }
+let glExpanded = store.get("tgcf-gl-open") === "1";
 document.addEventListener("click", (e) => {
+  if (e.target.closest("[data-gltoggle]")) {
+    glExpanded = !glExpanded; store.set("tgcf-gl-open", glExpanded ? "1" : "0"); renderGlossary();
+    if (!glExpanded) $("#gloss").scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
+    return;
+  }
   const b = e.target.closest("[data-gltab]");
   if (!b) return;
   glTab = b.dataset.gltab; store.set("tgcf-gl", glTab); renderGlossary();
