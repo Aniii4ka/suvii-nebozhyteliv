@@ -234,6 +234,7 @@ header { grid-area: head; display: flex; flex-wrap: wrap; align-items: flex-end;
 .gl-new { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 3px; font: 600 10.5px/1.6 var(--f-ui); color: var(--glow); border: 1px solid color-mix(in srgb, var(--glow) 60%, transparent); vertical-align: 2px; }
 .gl-lock { margin: 0; font-size: 13px; color: var(--muted); }
 .gl-src { margin: 0; font-size: 12px; color: var(--muted); }
+.gloss .reveal-toggle { width: auto; align-self: flex-start; }
 .gl-body { display: flex; flex-direction: column; gap: 12px; }
 .gl-toggle { display: none; }
 @media (max-width: 900px) {
@@ -2402,7 +2403,8 @@ function renderNames() {
 function renderArcBox() { const html = arcSummary(); const box = $("#arcbox"); box.innerHTML = html; box.hidden = !html; }
 /* Глосарій. Написання — за глосарієм українського видання; піньїнь звірено з Heaven Officials Blessing Wiki
    (сторінки персонажів, зброї й понять) та Wiktionary (читання кожного ієрогліфа). Пояснення — своїми словами.
-   lvl — з якої арки запис відкривається; x — додаткові рядки (титул, облік) зі своїм рівнем. */
+   lvl — з якої арки запис відкривається; x — додаткові рядки (титул, облік) зі своїм рівнем.
+   r: 1 — це розкриття: в арці, де воно стається, ховається, доки не натиснуто «показати розкриття» (як у блоці «Що сталося в арці»). */
 const GLOSSARY_TABS = [
   { key: "terms", name: "Терміни" },
   { key: "weapons", name: "Зброя" },
@@ -2437,21 +2439,21 @@ const GLOSSARY = [
   { tab: "names", lvl: 3, t: "Білий Безликий", py: "Báiwúxiàng", d: "Один із Чотирьох Великих Лих.", x: [{ lvl: 3, k: "Титул", t: "Всеосяжне Лихо в білому вбранні", py: "Báiyī huòshì" }] },
   { tab: "names", lvl: 3, t: "Ґудзи", py: "Gǔzi", d: "«Пшоно»." },
   { tab: "names", lvl: 1, t: "Дзюньву", py: "Jūnwú", d: "«Володар» і «я».", x: [{ lvl: 1, k: "Титул", t: "Верховний бог Військової Могутності", py: "Shénwǔ dàdì" }] },
-  { tab: "names", lvl: 3, t: "Їнь Ю", py: "Yǐn Yù", d: "«Привабити нефрит».", x: [{ lvl: 6, k: "Титул", t: "Його Високість Їнь Ю", py: "Yǐn Yù diànxià" }] },
+  { tab: "names", lvl: 3, t: "Їнь Ю", py: "Yǐn Yù", d: "«Привабити нефрит».", x: [{ r: 1, lvl: 6, k: "Титул", t: "Його Високість Їнь Ю", py: "Yǐn Yù diànxià" }] },
   { tab: "names", lvl: 2, t: "Лан Цяньцьов", py: "Láng Qiānqiū", d: "«Лан» — «молодий чоловік», «Цяньцьов» — «тисяча осеней», тобто довговічність.", x: [{ lvl: 2, k: "Титул", t: "Володар Тайхва", py: "Tàihuá zhēnjūn", d: "«мирний і пишний»" }] },
-  { tab: "names", lvl: 3, t: "Ланьчан", py: "Lánchāng", d: "«Орхідея» й «аїр».", x: [{ lvl: 6, k: "Людське ім’я", t: "Дзяньлань", py: "Jiànlán", d: "«орхідея-меч», квітка гладіолус" }] },
+  { tab: "names", lvl: 3, t: "Ланьчан", py: "Lánchāng", d: "«Орхідея» й «аїр».", x: [{ r: 1, lvl: 6, k: "Людське ім’я", t: "Дзяньлань", py: "Jiànlán", d: "«орхідея-меч», квітка гладіолус" }] },
   { tab: "names", lvl: 1, t: "Лінвень", py: "Língwén", d: "«Священна культурність», «священна й витончена».", x: [{ lvl: 1, k: "Титул", t: "Володарка Лінвень", py: "Língwén zhēnjūn" }] },
   { tab: "names", lvl: 4, t: "Мей Няньцін", py: "Méi Niànqīng", d: "«Мей» — «слива»; «Няньцін» — «вчитися, декламувати» і «сановник»." },
-  { tab: "names", lvl: 1, t: "Му Цін", py: "Mù Qíng", d: "«Прагнути» й «почуття».", x: [{ lvl: 1, k: "Титул", t: "генерал Сюаньджень", py: "Xuánzhēn jiāngjūn", d: "«справжня природа речей»" }, { lvl: 6, k: "Облік", t: "Фуяо", py: "Fúyáo", d: "«стрімкий вихор»" }] },
+  { tab: "names", lvl: 1, t: "Му Цін", py: "Mù Qíng", d: "«Прагнути» й «почуття».", x: [{ lvl: 1, k: "Титул", t: "генерал Сюаньджень", py: "Xuánzhēn jiāngjūn", d: "«справжня природа речей»" }, { r: 1, lvl: 6, k: "Облік", t: "Фуяо", py: "Fúyáo", d: "«стрімкий вихор»" }] },
   { tab: "names", lvl: 1, t: "Пей Мін", py: "Péi Míng", d: "«Пей» — лише прізвище; «Мін» — «чайне листя».", x: [{ lvl: 1, k: "Титул", t: "генерал Мінґван", py: "Míngguāng jiāngjūn", d: "«яскравий блиск»" }] },
   { tab: "names", lvl: 1, t: "Пей Сьов", py: "Péi Xiù", d: "«Сьов» — «сузір’я».", x: [{ lvl: 1, k: "Титул", t: "генерал Пей-молодший", py: "Xiǎopéi jiāngjūn" }] },
   { tab: "names", lvl: 1, t: "Сє Лянь", py: "Xiè Lián", d: "«Сє» — «дякувати», «Лянь» — «співчуття, жаль; любити».", x: [{ lvl: 1, k: "Титул", t: "Наслідний принц Сяньле", py: "Xiānlè", d: "«божественний і веселий»" }] },
   { tab: "names", lvl: 1, t: "Сюань Дзі", py: "Xuān Jī", d: "«Декларувати» й «наложниця»." },
-  { tab: "names", lvl: 1, t: "Фенсінь", py: "Fēngxìn", d: "«Вітер» і «довіра».", x: [{ lvl: 1, k: "Титул", t: "генерал Наньян", py: "Nányáng jiāngjūn", d: "«південне сонце»" }, { lvl: 1, k: "Титул", t: "генерал Дзюян", py: "Jùyáng jiāngjūn", d: "«повна чудова сила»" }, { lvl: 6, k: "Облік", t: "Наньфен", py: "Nánfēng", d: "«південний вітер»" }] },
-  { tab: "names", lvl: 1, t: "Хва Чен", py: "Huā Chéng", d: "«Квіти» й «місто».", x: [{ lvl: 1, k: "Титул", t: "Шукач квіток у багряну зливу", py: "Xuèyǔ tànhuā" }, { lvl: 2, k: "Облік", t: "Саньлан", py: "Sānláng", d: "«третій син»" }, { lvl: 7, k: "Облік", t: "Вумін", py: "Wúmíng", d: "«безіменний»" }] },
-  { tab: "names", lvl: 5, t: "Хе Сюань", py: "Hè Xuán", d: "«Вітати, бажати щастя» і «чорний».", x: [{ lvl: 5, k: "Титул", t: "Темновод, що топить кораблі", py: "Hēishuǐ chénzhōu" }, { lvl: 5, k: "Прізвисько", t: "Чорний Привид Темноводдя", py: "Hēishuǐ xuán guǐ" }] },
+  { tab: "names", lvl: 1, t: "Фенсінь", py: "Fēngxìn", d: "«Вітер» і «довіра».", x: [{ lvl: 1, k: "Титул", t: "генерал Наньян", py: "Nányáng jiāngjūn", d: "«південне сонце»" }, { lvl: 1, k: "Титул", t: "генерал Дзюян", py: "Jùyáng jiāngjūn", d: "«повна чудова сила»" }, { r: 1, lvl: 6, k: "Облік", t: "Наньфен", py: "Nánfēng", d: "«південний вітер»" }] },
+  { tab: "names", lvl: 1, t: "Хва Чен", py: "Huā Chéng", d: "«Квіти» й «місто».", x: [{ lvl: 1, k: "Титул", t: "Шукач квіток у багряну зливу", py: "Xuèyǔ tànhuā" }, { r: 1, lvl: 2, k: "Облік", t: "Саньлан", py: "Sānláng", d: "«третій син»" }, { r: 1, lvl: 7, k: "Облік", t: "Вумін", py: "Wúmíng", d: "«безіменний»" }] },
+  { tab: "names", r: 1, lvl: 5, t: "Хе Сюань", py: "Hè Xuán", d: "«Вітати, бажати щастя» і «чорний».", x: [{ lvl: 5, k: "Титул", t: "Темновод, що топить кораблі", py: "Hēishuǐ chénzhōu" }, { lvl: 5, k: "Прізвисько", t: "Чорний Привид Темноводдя", py: "Hēishuǐ xuán guǐ" }] },
   { tab: "names", lvl: 5, t: "Цвоцво", py: "Cuòcuò", d: "«Помилка»." },
-  { tab: "names", lvl: 3, t: "Ці Жон", py: "Qī Róng", d: "«Скорбота» й «вираз обличчя» — разом «сумний вигляд».", x: [{ lvl: 3, k: "Титул", t: "Зелений Ліхтар, що подорожує вночі", py: "Qīngdēng yèyóu" }, { lvl: 3, k: "Прізвисько", t: "Зелений Привид", py: "Qīng guǐ" }] },
+  { tab: "names", lvl: 3, t: "Ці Жон", py: "Qī Róng", d: "«Скорбота» й «вираз обличчя» — разом «сумний вигляд».", x: [{ r: 1, lvl: 3, k: "Титул", t: "Зелений Ліхтар, що подорожує вночі", py: "Qīngdēng yèyóu" }, { r: 1, lvl: 3, k: "Прізвисько", t: "Зелений Привид", py: "Qīng guǐ" }] },
   { tab: "names", lvl: 2, t: "Цюань Їджень", py: "Quán Yīzhēn", d: "«Влада, право» й «істина».", x: [{ lvl: 2, k: "Титул", t: "генерал Ціїн", py: "Qíyīng jiāngjūn", d: "«незвичайний герой»" }] },
   { tab: "names", lvl: 2, t: "Ши Цінсюань", py: "Shī Qīngxuán", d: "«Ши» — «учитель, майстер», як і покровителі стихій у міфах; «Цінсюань» — «синьо-зелений» і «чорний», відсилка до милосердного божества — Рятівника від страждань Тайї (Tàiyǐ jiùkǔ tiānzūn).", x: [{ lvl: 2, k: "Титул", t: "Повелитель вітру", py: "Fēngshī" }] },
   { tab: "names", lvl: 4, t: "Юши Хван", py: "Yǔshī Huáng", d: "«Юши» — покровитель дощу в міфах, так само зветься й королівство Юши; «Хван» — «бамбук».", x: [{ lvl: 4, k: "Титул", t: "Повелителька дощу", py: "Yǔshī niángniang" }] },
@@ -2460,19 +2462,25 @@ const GLOSSARY = [
 /* ---------- глосарій ---------- */
 let glTab = GLOSSARY_TABS.some((t) => t.key === store.get("tgcf-gl")) ? store.get("tgcf-gl") : "terms";
 const glOpen = (lvl) => state.all || state.lvl >= lvl;
+// розкриття поточної арки ховаються так само, як у блоці «Що сталося в арці»
+const glHidden = (o) => !!o.r && !state.all && o.lvl === state.lvl && !state.showReveals;
+const glShow = (o) => glOpen(o.lvl) && !glHidden(o);
 function renderGlossary() {
   const box = $("#gloss");
   if (!box) return;
   const inTab = GLOSSARY.filter((g) => g.tab === glTab);
-  const shown = inTab.filter((g) => glOpen(g.lvl));
-  const locked = inTab.length - shown.length;
+  const shown = inTab.filter(glShow);
+  const locked = inTab.filter((g) => !glOpen(g.lvl)).length;
+  // розкриття поточної арки в цій вкладці (і сховані, і вже показані — для кнопки)
+  const isRev = (o) => !!o.r && !state.all && o.lvl === state.lvl;
+  const revCount = inTab.reduce((n, g) => n + (isRev(g) ? 1 : 0) + ((isRev(g) || glOpen(g.lvl)) ? (g.x || []).filter(isRev).length : 0), 0);
   const fresh = (lvl) => isNew(lvl) ? ` <span class="gl-new">нове</span>` : "";
   const item = (g) => {
-    const extra = (g.x || []).filter((e) => glOpen(e.lvl)).map((e) =>
+    const extra = (g.x || []).filter(glShow).map((e) =>
       `<dd class="gl-x"><span class="gl-k">${esc(e.k)}:</span> ${esc(e.t)} <span class="gl-py">· ${esc(e.py)}</span>${e.d ? ` — ${esc(e.d)}` : ""}${e.lvl !== g.lvl ? fresh(e.lvl) : ""}</dd>`).join("");
     return `<div class="gl-item"><dt><span class="gl-t">${esc(g.t)}</span> <span class="gl-py">· ${esc(g.py)}</span>${fresh(g.lvl)}</dt><dd>${esc(g.d)}</dd>${extra}</div>`;
   };
-  const total = GLOSSARY.filter((g) => glOpen(g.lvl)).length;
+  const total = GLOSSARY.filter(glShow).length;
   // на телефоні глосарій згортається (кнопка видна лише там); на комп’ютері завжди розгорнутий
   box.classList.toggle("collapsed", !glExpanded);
   box.innerHTML = `
@@ -2485,6 +2493,7 @@ function renderGlossary() {
     </div>
     <div class="gl-body" id="glBody">
     <dl class="gl-list">${shown.map(item).join("")}</dl>
+    ${revCount ? `<button class="reveal-toggle" type="button" data-reveals aria-expanded="${state.showReveals}">${state.showReveals ? "Сховати розкриття" : `Розкриття арки в глосарії приховано (${revCount}). Натисніть, щоб показати`}</button>` : ""}
     ${locked ? `<p class="gl-lock">Ще ${locked} ${locked === 1 ? "запис відкриється" : locked < 5 ? "записи відкриються" : "записів відкриються"} далі за сюжетом.</p>` : ""}
     <p class="gl-src">Написання — за глосарієм українського видання, транскрипція піньїнем звірена з Heaven Officials Blessing Wiki та Wiktionary.</p>
     </div>`;
@@ -2521,7 +2530,7 @@ document.addEventListener("click", (e) => {
   if (fm) { state.formKey = fm.dataset.form; renderPanel(); return; }
   const un = e.target.closest("[data-uncompare]");
   if (un) { state.compare = state.compare.filter((id) => id !== un.dataset.uncompare); syncGraph(false); renderPanel(); return; }
-  if (e.target.closest("[data-reveals]")) { state.showReveals = !state.showReveals; renderArcBox(); renderPanel(); return; }
+  if (e.target.closest("[data-reveals]")) { state.showReveals = !state.showReveals; renderArcBox(); renderPanel(); renderGlossary(); return; }
   if (e.target.closest("[data-back]")) { select(null); return; }
   const chip = e.target.closest("[data-type]");
   if (chip) {
